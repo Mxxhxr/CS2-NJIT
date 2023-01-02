@@ -4,15 +4,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class Maze {
   
-  private static char[][] mazeArray;
-  
-  
-  
   public static char[][] getMaze(String filename) throws IOException {
+
     FileReader fr = new FileReader("samp.txt");
     BufferedReader br = new BufferedReader(fr);
     String line = br.readLine();
@@ -41,7 +42,8 @@ public class Maze {
     
     return mazeArray;
   }
-  public static int[] findEntry() {
+
+  public static int[] findEntry(char[][] mazeArray) {
     int[] entry = new int[2];
     for (int i = 0; i < mazeArray.length; i++) {
       for (int j = 0; j < mazeArray[i].length; j++) {
@@ -53,7 +55,8 @@ public class Maze {
     }
     return entry;
   }
-  public static int[] findExit() {
+
+  public static int[] findExit(char[][] mazeArray) {
     int[] exit = new int[2];
     for (int i = 0; i < mazeArray.length; i++) {
       for (int j = 0; j < mazeArray[i].length; j++) {
@@ -65,46 +68,62 @@ public class Maze {
     }
     return exit;
   }
+
   public static boolean isValidSpot(char[][] mazeArray, int r, int c) {
-    return mazeArray[r][c] == ' ';
+
+    if(r<0 || r>=mazeArray.length || c<0 || r>=mazeArray.length) return false;
+    
+    return mazeArray[r][c] == ' ' || mazeArray[r][c] == '-';
   }
   
-  public static boolean traverse(char[][] mazeArray, int x, int y, int[] exit) {
-    ArrayList<int[]> fringe = new ArrayList<>();
-    fringe.add(new int[]{x, y});
+  public static boolean traverse(char[][] mazeArray, int y, int x, int[] exit) {
+
+    Deque<int[]> fringe = new ArrayDeque<>();
+    fringe.add(new int[]{y, x});
     ArrayList<int[]> explored = new ArrayList<>();
     
     while (!fringe.isEmpty()) {
-      int[] current = fringe.remove(0);
+      int[] current = fringe.pop();
       int r = current[0];
       int c = current[1];
       if (!explored.contains(current)) {
-        if (Arrays.equals(current, exit)) {
+
+        if (r == exit[0] && c == exit[1]) {
           return true;
-          
         }
         
         if (isValidSpot(mazeArray, r - 1, c)) fringe.add(new int[]{r - 1, c});
         if (isValidSpot(mazeArray, r + 1, c)) fringe.add(new int[]{r + 1, c});
-        if (isValidSpot(mazeArray, r, c - 1)) fringe.add(new int[]{r, c - 1});
         if (isValidSpot(mazeArray, r, c + 1)) fringe.add(new int[]{r, c + 1});
+        if (isValidSpot(mazeArray, r, c - 1)) fringe.add(new int[]{r, c - 1});
+
         explored.add(current);
         mazeArray[r][c] = '+';
       }
     }
+
     return false;
   }
   
   public static void main(String[] args) throws IOException {
     
-    mazeArray = getMaze("samp.txt");
-    int[]entry = findEntry();
-    int[]exit = findExit();
+    char [][] mazeArray = getMaze("samp.txt");
+    int[] initial = findEntry(mazeArray);
+    int[] goal = findExit(mazeArray);
     
-    System.out.println(Arrays.toString(entry));
-    System.out.println(Arrays.toString(exit));
+    System.out.println("Initial: "+Arrays.toString(initial));
+    System.out.println("Goal: "+Arrays.toString(goal));
+
+    boolean result = traverse(mazeArray,initial[0],initial[1], goal);
     
-    if(traverse(mazeArray, 0, 0, exit)) {
+    for (int k = 0; k < mazeArray.length; k++) {
+      for (int m = 0; m < mazeArray[k].length; m++) {
+        System.out.print(mazeArray[k][m]);
+      }
+      System.out.println();
+    }
+    
+    if(result) {
       System.out.println("Solved maze.");
     }
     else {
