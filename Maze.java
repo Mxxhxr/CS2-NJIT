@@ -1,4 +1,6 @@
-// Project 1
+// Maahir Vohra
+// CS 114W01
+// 31598613
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,15 +8,13 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class Maze {
   
   public static char[][] getMaze(String filename) throws IOException {
 
-    FileReader fr = new FileReader("samp.txt");
+    FileReader fr = new FileReader("maze.txt");
     BufferedReader br = new BufferedReader(fr);
     String line = br.readLine();
     String[] dimension = line.split(" ");
@@ -111,8 +111,8 @@ public class Maze {
     int[] initial = findEntry(mazeArray);
     int[] goal = findExit(mazeArray);
     
-    System.out.println("Initial: "+Arrays.toString(initial));
-    System.out.println("Goal: "+Arrays.toString(goal));
+    System.out.println("Initial: "+ Arrays.toString(initial));
+    System.out.println("Goal: "+ Arrays.toString(goal));
 
     boolean result = traverse(mazeArray,initial[0],initial[1], goal);
     
