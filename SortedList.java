@@ -6,22 +6,20 @@ import java.util.LinkedList;
 
 public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
 
-    private void insertRecursively(Node<E> previous, Node<E> current,Node<E> newNode)
-    {
+    private void insertRecursively(Node<E> previous, Node<E> current,Node<E> newNode){
     //Base Case: Insert at this spot bc value is null or less than new node
-        if(current == null)
-        {
+        if(current == null){
             head = newNode;           
         }
         else if(newNode.data.compareTo(current.data) < 0){
 
-            if(previous == null) //make newNode the head node of the list
-            {
+            //make newNode the head node of the list
+            if(previous == null) { 
+
                 newNode.next = head;
                 head = newNode;
             }
-            else
-            {
+            else {
                 newNode.next = previous.next;
                 previous.next = newNode;
             }
@@ -34,8 +32,7 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
             insertRecursively(current, current.next, newNode);
     }
 
-    public void insert(E data)
-    {
+    public void insert(E data){
         // Create a node to hold the new data.
         Node<E> newNode = new Node<E>(data);
         insertRecursively(null, head, newNode);
@@ -55,13 +52,11 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
         };
     }
 
-    private void removeRecursively(Node<E> previous, Node<E> current, E data)
-    {
+    private void removeRecursively(Node<E> previous, Node<E> current, E data) {
         // Base Case: check for null or if you are on the right node
         if(current == null)
             return;
-        else if(current.data.compareTo(data) == 0)
-        {   
+        else if(current.data.compareTo(data) == 0) {   
             if(previous == null) //remove head of list
                 head = current.next;
             else
@@ -72,49 +67,48 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
             removeRecursively(current, current.next, data);
     }
 
-    public void remove(E value)
-    {
+    public void remove(E value) {
         removeRecursively(null, head, value);
     }  
 
     private E retrieveRecursively(Node<E> node, int index, int i) throws IndexOutOfBoundsException {
 
-        if(node == null){
+        if(node == null) {
             throw new IndexOutOfBoundsException();
         }
-        else if(i == index){
+        else if(i == index) {
             return node.data;
-        }else{
+        }
+        else {
             return retrieveRecursively(node.next, index, i+1);
         }
     }
     
-    public E retrieve(int index){
+    public E retrieve(int index) {
         return retrieveRecursively(head, index, 0);
     }
 
-    private boolean searchRecursively(Node<E> node, E data){
+    private boolean searchRecursively(Node<E> node, E data) {
         //Base case: check if empty list or end of list
 
         if(node == null) {
             return false;
         } 
         //Base case: check if node has data we are looking for
-        else if(node.data.equals(data)){
+        else if(node.data.equals(data)) {
             return true;
         }
         //Recursive Case: check next node for data
-        else{
+        else {
             return searchRecursively(node.next, data);
         }
         
     }
     
-    public boolean search(E data){
+    public boolean search(E data) {
         return searchRecursively(head, data);
-    }
-
-
+    } 
+    
     public static void main(String[] args) {
 
         ListMV<Integer> list = new SortedList<Integer>();
@@ -149,5 +143,4 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
         }
 
     }
-    
 }
