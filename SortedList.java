@@ -1,10 +1,6 @@
-package lab2;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Random;
-
-import lab2.ListMV.Node;
-
 import java.util.LinkedList;
 
 

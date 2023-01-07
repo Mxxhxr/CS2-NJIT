@@ -1,9 +1,5 @@
-package lab2;
 
-
-// List.java
-
- public abstract class ListMV<E> implements Iterable<E> {
+public abstract class ListMV<E> implements Iterable<E> {
 
     protected class Node<T> {
 
