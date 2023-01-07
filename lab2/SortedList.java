@@ -18,6 +18,7 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
             head = newNode;           
         }
         else if(newNode.data.compareTo(current.data) < 0){
+
             if(previous == null) //make newNode the head node of the list
             {
                 newNode.next = head;
@@ -29,7 +30,10 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
                 previous.next = newNode;
             }
         }
-    // Recursive Case: run method on next node
+        else if(newNode.data.compareTo(current.data) >= 0 && current.next == null){
+            current.next = newNode;
+        }
+        // Recursive Case: run method on next node
         else
             insertRecursively(current, current.next, newNode);
     }
@@ -69,58 +73,49 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
         }
         // Recursive Case: run method on next node
         else
-            remove(current, current.next, data);
+            removeRecursively(current, current.next, data);
     }
 
-    public void remove(ListMV<E>.Node<E> current, ListMV<E>.Node<E> next, E value)
+    public void remove(E value)
     {
         removeRecursively(null, head, value);
     }  
 
-    private E retrieveRecursively(Node<E> node, int index) throws IllegalStateException {
-        try {
-            if(node == null){
-                throw new IllegalStateException("List is empty");
-            }
-            else{
-                if(index == 0){
-                    return node.data;
-                }
-                else{
-                    retrieveRecursively(node.next,index-1);
-                }
-            }
-        } 
-        catch (IllegalStateException e) {
-            System.out.println("Illegal State Exception");
+    private E retrieveRecursively(Node<E> node, int index, int i) throws IndexOutOfBoundsException {
+
+        if(node == null){
+            throw new IndexOutOfBoundsException();
         }
-        return null;
+        else if(i == index){
+            return node.data;
+        }else{
+            return retrieveRecursively(node.next, index, i+1);
+        }
     }
     
     public E retrieve(int index){
-        return retrieveRecursively(head, index);
+        return retrieveRecursively(head, index, 0);
     }
 
     private boolean searchRecursively(Node<E> node, E data){
         //Base case: check if empty list or end of list
-        if(node == null){
+
+        if(node == null) {
             return false;
         } 
         //Base case: check if node has data we are looking for
-        if(node.data.equals(data)){
+        else if(node.data.equals(data)){
             return true;
         }
         //Recursive Case: check next node for data
         else{
-            search(node.next, data);
+            return searchRecursively(node.next, data);
         }
-
-        return false;
         
     }
     
-    public boolean search(Node<E> node, E data){
-        return searchRecursively(node, data);
+    public boolean search(E data){
+        return searchRecursively(head, data);
     }
 
 
@@ -130,8 +125,8 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
         Random rand = new Random(1);
         int n, num = args.length == 1 ? Integer.parseInt(args[0]) : 11;
         long start, stop;
-        System.out.println("insert");
 
+        System.out.println("Insert: ");
         for (int i = 0; i < num; ++i) {
             n = rand.nextInt(num);
             list.insert(n);
@@ -141,9 +136,12 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
             }
             System.out.println();
         }
+        System.out.println("\nSearch for "+6+": "+list.search(6));
+
+        System.out.println("\nRetrieve at Index "+2+": "+list.retrieve(2));
 
         rand = new Random(1);
-        System.out.println("remove");
+        System.out.println("\nRemove: ");
         for (int i = 0; i < num; ++i) {
             n = rand.nextInt(num);
             list.remove(n);
@@ -153,18 +151,7 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
             }
             System.out.println();
         }
-    }
 
-    @Override
-    public void remove(E data) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public boolean search(E data) {
-        // TODO Auto-generated method stub
-        return false;
     }
     
 }
