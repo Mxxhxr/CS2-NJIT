@@ -1,11 +1,43 @@
 import java.util.Arrays;
 import java.util.Random;
 
+
 public class Sorts {
 
     public static <T extends Comparable<? super T>> void heapSort(T[] array) {
+        int n = array.length;
 
+        for (int i = (n-1) / 2; i >= 0; i--) {
+            heapify(array, n, i);
+        }
+        for(int i = n-1; i >= 0; i-- ) {
+            T temp = array[0];
+            array[0] = array[i];
+            array[i] = temp;
+            heapify(array, i, 0);
+            
+        }
 
+    }
+
+    public static <T extends Comparable<? super T>> void heapify(T[] array, int n, int i) {
+        
+        int max = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2 ;
+
+        if (left < n && array[left].compareTo(array[max]) > 0) {
+            max = left;
+        }
+        if (right < n && array[right].compareTo(array[max]) > 0 ) {
+            max = right;
+        }
+        if (max != i) {
+            T temp = array[i];
+            array[i] = array[max];
+            array[max] = temp;
+            heapify(array, n, max);
+        }
     }
 
     public static <T extends Comparable<? super T>> void bubbleSort(T[] array) {
@@ -167,12 +199,15 @@ public class Sorts {
         Random rand;
         long start, stop;
         rand = new Random(1);
+
         for (int i = 0; i < array.length; ++i) {
             array[i] = rand.nextInt(num);
         }
+
         start = System.currentTimeMillis();
         Sorts.bubbleSort(array);
         stop = System.currentTimeMillis();
+
         for (int i = 0; i < array.length - 1; ++i) {
             if (array[i] > array[i+1]) {
                 System.out.println("bubble fail");
@@ -184,6 +219,7 @@ public class Sorts {
         for (int i = 0; i < array.length; ++i) {
             array[i] = rand.nextInt(num);
         }
+
         start = System.currentTimeMillis();
         Sorts.insertSort(array);
         stop = System.currentTimeMillis();
@@ -198,6 +234,7 @@ public class Sorts {
         for (int i = 0; i < array.length; ++i) {
             array[i] = rand.nextInt(num);
         }
+
         start = System.currentTimeMillis();
         Sorts.selectSort(array);
         stop = System.currentTimeMillis();
@@ -212,6 +249,7 @@ public class Sorts {
         for (int i = 0; i < array.length; ++i) {
             array[i] = rand.nextInt(num);
         }
+
         start = System.currentTimeMillis();
         Sorts.mergeSort(array);
         stop = System.currentTimeMillis();
@@ -226,6 +264,7 @@ public class Sorts {
         for (int i = 0; i < array.length; ++i) {
             array[i] = rand.nextInt(num);
         }
+        
         start = System.currentTimeMillis();
         Sorts.quickSort(array);
         stop = System.currentTimeMillis();
@@ -236,7 +275,24 @@ public class Sorts {
             }
         }
             System.out.println("quick pass: " + (stop - start));
+        
+        start = System.currentTimeMillis();
+        Sorts.heapSort(array);
+        stop = System.currentTimeMillis();
+
+        for (int i = 0; i < array.length - 1; ++i) {
+            if (array[i] > array[i+1]) {
+                System.out.println("heap fail");
+                System.exit(0);
+            }
         }
+        System.out.println("heap pass: " + (stop - start));
+        rand = new Random(1);
+        for (int i = 0; i < array.length; ++i) {
+            array[i] = rand.nextInt(num);
+        }
+        
+    }
 
 
 
