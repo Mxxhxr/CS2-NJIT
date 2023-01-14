@@ -1,7 +1,7 @@
-import java.util.List;
+//import java.util.List;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.LinkedList;
+//import java.util.LinkedList;
 
 
 public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
@@ -114,7 +114,7 @@ public class SortedList<E extends Comparable<? super E>> extends ListMV<E> {
         ListMV<Integer> list = new SortedList<Integer>();
         Random rand = new Random(1);
         int n, num = args.length == 1 ? Integer.parseInt(args[0]) : 11;
-        long start, stop;
+        //long start, stop; 
 
         System.out.println("Insert: ");
         for (int i = 0; i < num; ++i) {
