@@ -30,7 +30,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             return null;
         }
 
-        if (data.compareTo(root.data) < 0) {
+        if (data.compareTo(root.data) <= 0) {
             root.left = removeRecursively(root.left, data);
         } else if (data.compareTo(root.data) > 0) {
             root.right = removeRecursively(root.right, data);
@@ -42,7 +42,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             } else if (root.right == null) {
                 return root.left;
             } else {
-                Node<E> minNode = findMin(root.right);
+                Node<E> minNode = getMinimumNode(root.right);
                 root.data = minNode.data;
                 root.right = removeRecursively(root.right, minNode.data);
             }
@@ -56,7 +56,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
         root = removeRecursively(root,data);
     }
 
-    private Node<E> findMin(Node<E> node) {
+    private Node<E> getMinimumNode(Node<E> node) {
         while (node.left != null) {
             node = node.left;
         }
